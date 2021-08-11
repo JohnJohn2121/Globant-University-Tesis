@@ -1,6 +1,7 @@
 package com.john21121.GlobantUniversityTesis.userloggin;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +10,14 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class UserLoggin {
+@NoArgsConstructor
+public class userLogin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String userName;
     private String password;
+    private UserRegistration userRegis;
 
 }
