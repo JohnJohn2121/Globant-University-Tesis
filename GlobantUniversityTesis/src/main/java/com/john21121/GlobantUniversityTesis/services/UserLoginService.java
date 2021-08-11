@@ -6,5 +6,6 @@ public interface UserLoginService {
 
     UserLogin findById(Long l);
 
+
     void deleteById(Long deletionId);
 }

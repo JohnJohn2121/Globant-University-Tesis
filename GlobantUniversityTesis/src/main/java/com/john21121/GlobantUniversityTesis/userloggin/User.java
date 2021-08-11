@@ -15,6 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private UserRegistration userRegistration;
     private UserLogin userLogin;
     private Inbox inbox;
 
