@@ -2,10 +2,7 @@ package com.john21121.GlobantUniversityTesis.userloggin;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -25,6 +22,9 @@ public class UserRegistration {
     private String city;
     private String state;
     private String country;
+
+    @ManyToOne
+    private UserLogin userLogin;
 
 
 }

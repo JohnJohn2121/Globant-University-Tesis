@@ -1,5 +1,6 @@
 package com.john21121.GlobantUniversityTesis.mailingsystem;
 
+import com.john21121.GlobantUniversityTesis.userloggin.User;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,5 +32,8 @@ public class Inbox {
     joinColumns = @JoinColumn(name = "inbox_id"),
         inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new HashSet<>();
+
+    @ManyToMany(mappedBy = "inboxes")
+    private Set<User> users = new HashSet<>();
 
 }
