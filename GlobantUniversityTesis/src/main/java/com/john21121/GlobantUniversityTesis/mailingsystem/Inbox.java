@@ -18,10 +18,13 @@ public class Inbox {
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    private Label label;
+    private Recipient recipient;
 
-
-    private Message message;
+    @ManyToMany
+    @JoinTable(name = "inbox_messages",
+            joinColumns = @JoinColumn(name = "inbox_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id"))
+    private Set<Message> messages = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "inbox_labels",

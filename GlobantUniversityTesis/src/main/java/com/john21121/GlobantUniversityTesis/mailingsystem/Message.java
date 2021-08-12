@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,7 +21,7 @@ public class Message {
     @Lob
     private Byte[] attachment;
 
-    private Recipient recipient;
-    private Inbox inbox;
+    @ManyToMany(mappedBy = "messages")
+    private Set<Inbox> inbox = new HashSet<>();
 
 }
