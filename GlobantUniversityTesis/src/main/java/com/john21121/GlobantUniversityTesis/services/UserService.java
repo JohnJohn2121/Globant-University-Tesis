@@ -1,10 +1,11 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.userloggin.User;
+import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 
 public interface UserService {
 
-    User findById(Long l);
+    User findById(String l);
 
-    void deleteById(Long deletionId);
+    void deleteById(String deletionId);
+
 }
