@@ -13,7 +13,7 @@ import java.util.Set;
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String subject;
     private String body;
@@ -21,7 +21,14 @@ public class Message {
     @Lob
     private Byte[] attachment;
 
-    @ManyToMany(mappedBy = "messages")
-    private Set<Inbox> inbox = new HashSet<>();
+    @ManyToOne
+    private User user;
+
+    @OneToMany
+    @JoinTable(name = "message_recipient",
+            joinColumns = @JoinColumn(name = "message_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipient_id"))
+    private Recipient recipient;
+
 
 }

@@ -20,6 +20,5 @@ public class Label {
     private String labelName;
 
 
-    @ManyToMany(mappedBy = "labels")
-    private Set<Inbox> inboxes;
+
 }

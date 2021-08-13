@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 @Repository
 public interface MessageRepository extends CrudRepository<Message, Long> {
+
+
 }
