@@ -26,11 +26,24 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Message message;
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(name = "user_recipient",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
     private Set<Recipient> recipients = new HashSet<>();
 
+    public User(String userName, String password, String firstName, String lastName, Long identificationNum,
+                String address, String zipCode, String city, String state, String country) {
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.identificationNum = identificationNum;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+    }
 
 }

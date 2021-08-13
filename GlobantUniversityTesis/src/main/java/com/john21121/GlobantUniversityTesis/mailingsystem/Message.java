@@ -24,7 +24,7 @@ public class Message {
     @ManyToOne
     private User user;
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "message_recipient",
             joinColumns = @JoinColumn(name = "message_id"),
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
