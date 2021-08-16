@@ -5,12 +5,9 @@ import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import com.john21121.GlobantUniversityTesis.services.UserService;
 import com.john21121.GlobantUniversityTesis.mailingsystem.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -32,8 +29,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public User getUserById(@PathVariable("userid")String userId){
-        User user = userService.findById(userId);
-        return user;
+        return userService.findById(userId);
     }
 
     @PostMapping("/create")
@@ -46,7 +42,7 @@ public class UserController {
 
     @PutMapping("/update/{userid}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable("userid")String userId,@RequestBody User user){
+    public Optional<User> updateUser(@PathVariable("userid")String userId, @RequestBody User user){
         Optional<User> user1 = userRepository.findById(userId);
         if (!user1.isPresent()){
             throw new NotFoundException("This User does´nt exist");
