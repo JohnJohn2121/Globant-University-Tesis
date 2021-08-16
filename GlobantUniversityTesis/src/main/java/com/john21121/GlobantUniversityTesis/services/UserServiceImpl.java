@@ -26,15 +26,18 @@ public class UserServiceImpl implements UserService {
         }
         return userOptional.get();
     }
-    //Todo complete
+
     @Override
     public User createNewUser(User user) {
-        return null;
+        userRepository.save(user);
+        return user;
     }
     //Todo Complete
     @Override
-    public User updateUserById(String userId, User user) {
-        return null;
+    public Optional<User> updateUserById(String userId, User user) {
+        Optional<User> user1= userRepository.findById(userId);
+
+        return user1;
     }
 
 
