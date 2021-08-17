@@ -1,7 +1,9 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
+import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
+import com.john21121.GlobantUniversityTesis.mailingsystem.RecipientType;
 import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
 import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user/{userId}/messages")
@@ -35,14 +38,18 @@ public class MessageController {
         this.recipientService = recipientService;
     }
 
-    @PostMapping("/sendmessage/")
+    @PostMapping("/sendmessage/{recipientId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Message sendMessage(@RequestBody Message message){
-        //User user1 = (User) userService.findById(); ask Pablo or Natalia if this is proper
-        message.setUser(user);
-        messageRepository.save(message);
-        messageService.createNewMessage(message);
-        return message;
+    public void sendMessageToRecipient(@RequestBody Message message,@PathVariable("recipientId") Long recipientId){
+        message = messageService.findById(message.getId());
+        User user = message.getUser();
+        Optional<Recipient> recipient = recipientRepository.findById(recipientId);
+        if (recipient.isPresent()) {
+            recipient.get().setRecipientType(RecipientType.TO);
+            recipient.get().setMessage(message);
+            recipient.get().setUser(user);
+        }
+        throw new NotFoundException("The user or Recipient, does not exist");
     }
 
     @GetMapping("/sentMessages/{messageid}")
@@ -66,6 +73,11 @@ public class MessageController {
         return (List<Message>) messageRepository.findAll();
     }
 
-
+    @DeleteMapping("/receivedMessages/{recipientid}/delete")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteMessageFromRecipient(@PathVariable("recipientid")Long messageId){
+        recipientService.deleteById(messageId);
+        recipientRepository.deleteById(messageId);
+    }
 
 }
