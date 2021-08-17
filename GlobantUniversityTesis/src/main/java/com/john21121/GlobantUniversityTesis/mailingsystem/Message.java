@@ -18,9 +18,6 @@ public class Message {
     private String subject;
     private String body;
 
-    @Lob
-    private Byte[] attachment;
-
     @ManyToOne
     private User user;
 
