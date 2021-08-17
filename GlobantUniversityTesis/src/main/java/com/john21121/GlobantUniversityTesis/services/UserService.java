@@ -13,8 +13,6 @@ public interface UserService {
 
     Optional<User> updateUserById(String userId, User user);
 
-
-
     Set<User> getUsers () ;
 
     void deleteById(String deletionId);

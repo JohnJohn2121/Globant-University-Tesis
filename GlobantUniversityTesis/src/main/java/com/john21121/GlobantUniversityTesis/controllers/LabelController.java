@@ -2,7 +2,6 @@ package com.john21121.GlobantUniversityTesis.controllers;
 
 import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Label;
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 import com.john21121.GlobantUniversityTesis.repository.LabelRepository;
 import com.john21121.GlobantUniversityTesis.services.LabelsServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class LabelController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Label createUser(@RequestBody Label label){
+    public Label createLabel(@RequestBody Label label){
         labelRepository.save(label);
         labelsService.createLabel(label);
         return label;

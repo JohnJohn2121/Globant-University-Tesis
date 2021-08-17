@@ -46,4 +46,10 @@ public class User {
         this.country = country;
     }
 
+    public User(Message message){
+        this.message = message;
+    }
+
+
+
 }
