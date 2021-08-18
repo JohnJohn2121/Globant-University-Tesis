@@ -26,7 +26,13 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Message message;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_label",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private Set<Label> labels = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "user_recipient",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))

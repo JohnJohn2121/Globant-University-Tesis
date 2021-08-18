@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
+
 
 @Data
 @Entity
@@ -27,5 +27,13 @@ public class Message {
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
     private Recipient recipient;
 
+    @ManyToMany
+    private Set<Label> labels;
 
+    public Message(String subject, String body, User user, Recipient recipient) {
+        this.subject = subject;
+        this.body = body;
+        this.user = user;
+        this.recipient = recipient;
+    }
 }

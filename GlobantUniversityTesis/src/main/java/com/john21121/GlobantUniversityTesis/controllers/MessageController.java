@@ -22,18 +22,14 @@ public class MessageController {
 
     private final MessageRepository messageRepository;
     private final MessageService messageService;
-    private final User user;
-    private final UserService userService;
+
     private final RecipientRepository recipientRepository;
     private final RecipientService recipientService;
 
     public MessageController(MessageRepository messageRepository, MessageService messageService,
-                             User user, UserService userService, RecipientService recipientService,
-                             RecipientRepository recipientRepository) {
+                             RecipientService recipientService, RecipientRepository recipientRepository) {
         this.messageRepository = messageRepository;
         this.messageService = messageService;
-        this.user = user;
-        this.userService = userService;
         this.recipientRepository = recipientRepository;
         this.recipientService = recipientService;
     }
