@@ -13,10 +13,10 @@ public class Recipient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     private User user;
 
-    @OneToMany
+    @ManyToOne
     private Message message;
 
     @Enumerated(value = EnumType.STRING)

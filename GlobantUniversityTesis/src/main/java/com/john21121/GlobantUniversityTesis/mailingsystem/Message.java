@@ -25,12 +25,12 @@ public class Message {
     @JoinTable(name = "message_recipient",
             joinColumns = @JoinColumn(name = "message_id"),
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
-    private Recipient recipient;
+    private Set<Recipient> recipient;
 
     @ManyToMany
     private Set<Label> labels;
 
-    public Message(String subject, String body, User user, Recipient recipient) {
+    public Message(String subject, String body, User user,Set< Recipient> recipient) {
         this.subject = subject;
         this.body = body;
         this.user = user;
