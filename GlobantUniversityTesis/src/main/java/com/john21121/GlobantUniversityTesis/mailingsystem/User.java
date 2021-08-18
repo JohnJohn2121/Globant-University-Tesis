@@ -12,6 +12,9 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_username")
+    private Long id;
     private String userName;
     private String password;
     private String firstName;
@@ -26,11 +29,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Message> message;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_label",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id"))
-    private Set<Label> labels = new HashSet<>();
+
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_recipient",
