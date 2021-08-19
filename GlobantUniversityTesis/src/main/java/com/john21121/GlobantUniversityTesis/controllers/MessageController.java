@@ -22,7 +22,6 @@ public class MessageController {
 
     private final MessageRepository messageRepository;
     private final MessageService messageService;
-
     private final RecipientRepository recipientRepository;
     private final RecipientService recipientService;
 
@@ -34,16 +33,17 @@ public class MessageController {
         this.recipientService = recipientService;
     }
 
-    @PostMapping("/sendmessage/{recipientId}")
+    //TODO fix recipient name, validate userID here
+    @PostMapping("/messages/{recipientid}")
     @ResponseStatus(HttpStatus.CREATED)
     public void sendMessageToRecipient(@RequestBody Message message,@PathVariable("recipientId") Long recipientId){
         message = messageService.findById(message.getId());
         User user = message.getUser();
-        Optional<Recipient> recipient = recipientRepository.findById(recipientId);
-        if (recipient.isPresent()) {
-            recipient.get().setRecipientType(RecipientType.TO);
-            recipient.get().setMessage(message);
-            recipient.get().setUser(user);
+        Recipient recipient = recipientService.findById(recipientId);
+        if (recipient != null) {
+            recipient.setRecipientType(RecipientType.TO);
+            recipient.setMessage(message);
+            recipient.setUser(user);
         }
         throw new NotFoundException("The user or Recipient, does not exist");
     }
@@ -62,7 +62,7 @@ public class MessageController {
         return recipientService.findById(messageId);
     }
 
-    @GetMapping("/sentMessages")
+    @GetMapping("/inbox")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<Message> getAllMessages(){
