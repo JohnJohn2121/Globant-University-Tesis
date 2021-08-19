@@ -1,5 +1,8 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
+import com.john21121.GlobantUniversityTesis.dto.MessageDto;
+import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
+import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
@@ -36,13 +39,14 @@ public class MessageController {
     //TODO fix recipient name, validate userID here
     @PostMapping("/messages/{recipientid}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void sendMessageToRecipient(@RequestBody Message message,@PathVariable("recipientId") Long recipientId){
+    public void sendMessageToRecipient(@RequestBody MessageDto message, @PathVariable("recipientId") Long recipientId){
         message = messageService.findById(message.getId());
-        User user = message.getUser();
-        Recipient recipient = recipientService.findById(recipientId);
+        UserDto user = message.getUser();
+        RecipientDto recipient = recipientService.findById(recipientId);
         if (recipient != null) {
             recipient.setRecipientType(RecipientType.TO);
-            recipient.setMessage(message);
+            //TODO Fix this relation
+            // recipient.setMessage(message);
             recipient.setUser(user);
         }
         throw new NotFoundException("The user or Recipient, does not exist");
@@ -51,7 +55,7 @@ public class MessageController {
     @GetMapping("/sentMessages/{messageid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Message getMessageSentById(@PathVariable("messageid")Long messageId){
+    public MessageDto getMessageSentById(@PathVariable("messageid")Long messageId){
         return messageService.findById(messageId);
     }
 

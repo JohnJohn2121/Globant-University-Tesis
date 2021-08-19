@@ -1,19 +1,22 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
+import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface MessageService {
 
-    Message findById(Long id);
+    // Revision is for controller
+    Optional<MessageDto> findById(Long id);
 
-    Message createNewMessage(Message message);
+    MessageDto createNewMessage(MessageDto messageDto);
 
-    Set<Message> getMessages() ;
+    MessageDto saveMessageByDto(Long id,MessageDto messageDto);
+
+    List<MessageDto> getAllMessages() ;
 
     void deleteById(Long deletionId);
 }

@@ -1,46 +1,59 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
+import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
+import com.john21121.GlobantUniversityTesis.mappers.MessageMapper;
 import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
-    public MessageServiceImpl(MessageRepository messageRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, MessageMapper messageMapper) {
         this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
+    }
+
+
+    private MessageDto saveAndReturn(Message message){
+        Message savedMessage = messageRepository.save(message);
+        return messageMapper.messageToMessageDto(savedMessage);
+    }
+
+
+    @Override
+    public Optional<MessageDto> findById(Long id) {
+        return messageRepository.findById(id).map(messageMapper::messageToMessageDto);
     }
 
     @Override
-    public Message findById(Long id) {
-        Optional<Message> message = messageRepository.findById(id);
-        if (!message.isPresent()){
-            throw new NotFoundException("This Message Does not exist");
-        }
+    public MessageDto createNewMessage(MessageDto messageDto) {
 
-        return message.get();
+
+        return saveAndReturn(messageMapper.messageDtoToMessage(messageDto));
     }
 
     @Override
-    public Message createNewMessage(Message message) {
-        messageRepository.save(message);
-        return message;
+    public MessageDto saveMessageByDto(Long id, MessageDto messageDto) {
+        Message message = messageMapper.messageDtoToMessage(messageDto);
+        message.setId(id);
+
+        return saveAndReturn(message);
     }
 
     @Override
-    public Set<Message> getMessages() {
-        Set<Message> messages= new HashSet<>();
-        messageRepository.findAll().iterator().forEachRemaining(messages::add);
-        return messages;
+    public List<MessageDto> getAllMessages() {
+        return messageRepository.findAll().stream()
+                .map(message -> {MessageDto messageDto= messageMapper.messageToMessageDto(message);
+                return messageDto;})
+                .collect(Collectors.toList());
     }
 
     @Override
