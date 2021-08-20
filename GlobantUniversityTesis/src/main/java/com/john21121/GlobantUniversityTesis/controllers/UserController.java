@@ -1,6 +1,7 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
 
+import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import com.john21121.GlobantUniversityTesis.security.AuthRequest;
@@ -26,7 +27,6 @@ import java.util.Optional;
 public class UserController {
 
 
-    //TODO Update the whole class
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -57,8 +57,6 @@ public class UserController {
         catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
         }
-
-
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
@@ -67,41 +65,34 @@ public class UserController {
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
 
-    @GetMapping("/finduser/{userid}")
+    @GetMapping("/login/finduser/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public User getUserById(@PathVariable("userid")String userId){
-        return null;//userService.findById(userId);
+    public UserDto getUserById(@PathVariable("userid")Long userId){
+        return userService.findById(userId);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user){
-        userRepository.save(user);
-      //  userService.createNewUser(user);
-        return user;
+    public UserDto createUser(@RequestBody UserDto user){
+        return userService.createNewUser(user);
     }
 
-    @PutMapping("/update/{userid}")
+    @PutMapping("login/update/{userid}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> updateUser(@PathVariable("userid")Long userId, @RequestBody User user){
-        Optional<User> user1 = userRepository.findById(userId);
-        if (user1.isEmpty()){
+    public UserDto updateUser(@PathVariable("userid")Long userId, @RequestBody UserDto user){
+        UserDto user1 = userService.findById(userId);
+        if (user1 == null){
             throw new NotFoundException("This User does´nt exist");
         }
-        return null;//userService.updateUserById(userId,user);
+        return userService.updateUserById(userId,user);
     }
 
     @DeleteMapping("delete/{userid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserById(@PathVariable("userid")Long userId){
-        Optional<User> user1 = userRepository.findById(userId);
-        if (user1.isEmpty()){
-            throw new NotFoundException("This User does´nt exist");
-        }
-
-            userRepository.deleteById(userId);
-            userService.deleteById(userId);
+        userRepository.deleteById(userId);
+        userService.deleteById(userId);
 
     }
 
