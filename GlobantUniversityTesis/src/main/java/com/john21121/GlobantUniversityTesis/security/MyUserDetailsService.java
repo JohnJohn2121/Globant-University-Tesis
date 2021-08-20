@@ -20,9 +20,8 @@ public class MyUserDetailsService implements UserDetailsService {
         if (userEntity==null){
             throw new UsernameNotFoundException(s);
         }
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername
-                (userEntity.getUserName()).password(userEntity.getPassword()).authorities("USER").build();
 
-        return userDetails;
+        return org.springframework.security.core.userdetails.User.withUsername
+                (userEntity.getUserName()).password(userEntity.getPassword()).authorities("USER").build();
     }
 }
