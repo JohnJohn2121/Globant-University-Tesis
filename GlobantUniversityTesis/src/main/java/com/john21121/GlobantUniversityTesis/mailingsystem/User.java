@@ -1,6 +1,5 @@
 package com.john21121.GlobantUniversityTesis.mailingsystem;
 
-import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_username")
     private Long id;
-    private String userName;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -29,7 +28,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Message> message;
 
-
+    public User() {
+    }
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_recipient",
@@ -37,9 +37,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
     private Set<Recipient> recipients = new HashSet<>();
 
-    public User(String userName, String password, String firstName, String lastName, Long identificationNum,
+    public User(String username, String password, String firstName, String lastName, Long identificationNum,
                 String address, String zipCode, String city, String state, String country) {
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
