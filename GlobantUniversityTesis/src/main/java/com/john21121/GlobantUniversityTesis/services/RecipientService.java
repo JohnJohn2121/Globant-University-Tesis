@@ -1,18 +1,22 @@
 package com.john21121.GlobantUniversityTesis.services;
 
 
-import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
+import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
+
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 @Component
 public interface RecipientService {
-    Recipient findById(Long id);
 
-    Recipient createNewRecipient(Recipient recipient);
+    RecipientDto findById(Long id);
 
-    Set<Recipient> getMessagesInRecipient() ;
+    RecipientDto createNewRecipient(RecipientDto recipientDto);
+
+    List<RecipientDto> getAllMessagesInRecipient() ;
+
+    RecipientDto saveRecipientByDto(Long id,RecipientDto recipientDto);
 
     void deleteById(Long deletionId);
 }

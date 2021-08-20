@@ -1,44 +1,55 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
-import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
+import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
+import com.john21121.GlobantUniversityTesis.exceptions.ResourceNotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
+import com.john21121.GlobantUniversityTesis.mappers.RecipientMapper;
 import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipientServiceImpl implements RecipientService {
 
     private final RecipientRepository recipientRepository;
+    private final RecipientMapper recipientMapper;
 
-    public RecipientServiceImpl(RecipientRepository recipientRepository) {
+    public RecipientServiceImpl(RecipientRepository recipientRepository, RecipientMapper recipientMapper) {
         this.recipientRepository = recipientRepository;
+        this.recipientMapper = recipientMapper;
+    }
+
+    private RecipientDto saveAndReturn(Recipient recipient){
+        Recipient savedRecipient = recipientRepository.save(recipient);
+        return recipientMapper.recipientToRecipientDto(savedRecipient);
     }
 
     @Override
-    public Recipient findById(Long id) {
-        Optional<Recipient> recipientOptional = recipientRepository.findById(id);
-        if (!recipientOptional.isPresent()){
-            throw new NotFoundException("This User Recipient does not exist");
-        }
-        return recipientOptional.get();
+    public RecipientDto findById(Long id) {
+        return recipientRepository.findById(id).map(recipientMapper ::recipientToRecipientDto)
+                .map(recipientDto -> {recipientDto.setId(id);
+                return recipientDto;}).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public Recipient createNewRecipient(Recipient recipient) {
-        recipientRepository.save(recipient);
-        return recipient;
+    public RecipientDto createNewRecipient(RecipientDto recipientDto) {
+        return saveAndReturn(recipientMapper.recipientDtoToRecipient(recipientDto));
     }
 
     @Override
-    public Set<Recipient> getMessagesInRecipient() {
-        Set<Recipient> recipients = new HashSet<>();
-        recipientRepository.findAll().iterator().forEachRemaining(recipients::add);
-        return recipients;
+    public List<RecipientDto> getAllMessagesInRecipient() {
+        return recipientRepository.findAll().stream()
+                .map(recipientMapper::recipientToRecipientDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public RecipientDto saveRecipientByDto(Long id,RecipientDto recipientDto) {
+        Recipient recipient = recipientMapper.recipientDtoToRecipient(recipientDto);
+        return saveAndReturn(recipient);
     }
 
     @Override

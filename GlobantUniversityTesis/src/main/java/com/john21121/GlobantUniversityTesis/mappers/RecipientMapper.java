@@ -12,7 +12,7 @@ public interface RecipientMapper {
 
     RecipientMapper INSTANCE = Mappers.getMapper(RecipientMapper.class);
 
-    RecipientDto recipientToRecipientDto(Message message);
+    RecipientDto recipientToRecipientDto(Recipient recipient);
 
     Recipient recipientDtoToRecipient(RecipientDto recipientDto);
 

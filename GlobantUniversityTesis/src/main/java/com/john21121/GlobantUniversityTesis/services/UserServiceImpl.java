@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    //TODO Adapt controller To whole refactor of UserServiceImpl
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
