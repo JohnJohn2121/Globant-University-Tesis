@@ -1,55 +1,89 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
+import com.john21121.GlobantUniversityTesis.dto.UserDto;
+import com.john21121.GlobantUniversityTesis.exceptions.ResourceNotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.User;
+import com.john21121.GlobantUniversityTesis.mappers.UserMapper;
 import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    //TODO Adapt controller To whole refactor of UserServiceImpl
+
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper =userMapper;
+    }
+
+    private UserDto saveAndReturn(User user){
+        User savedUser = userRepository.save(user);
+        return userMapper.userToUserDto(savedUser);
     }
 
     @Override
-    public User findById(String id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent()){
-            throw new NotFoundException("User Not Found");
-        }
-        return userOptional.get();
+    public UserDto findById(Long id) {
+        return userRepository.findById(id).map(userMapper::userToUserDto)
+                .map(userDto -> {userDto.setId(id);
+                return userDto;}).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public User createNewUser(User user) {
-        userRepository.save(user);
-        return user;
+    public UserDto createNewUser(UserDto userDto) {
+        return saveAndReturn(userMapper.userDtoToUser(userDto));
     }
 
     @Override
-    public Optional<User> updateUserById(String userId, User user) {
-        Optional<User> user1= userRepository.findById(userId);
+    public UserDto updateUserById(Long userId, UserDto userDto) {
+        return userRepository.findById(userId).map(user -> {
 
-        return user1;
+            if (userDto.getPassword() != null){
+                user.setPassword(userDto.getPassword());
+            }
+            if (userDto.getAddress() != null){
+                user.setAddress(userDto.getAddress());
+            }
+            if (userDto.getCity() != null){
+               user.setCity(userDto.getCity());
+            }
+            if (userDto.getZipCode() != null){
+                user.setZipCode(userDto.getZipCode());
+            }
+            if (userDto.getCountry() != null){
+                user.setCountry(userDto.getCountry());
+            }
+            UserDto modifiedUser = userMapper.userToUserDto(userRepository.save(user));
+
+            modifiedUser.setId(userId);
+            return modifiedUser;
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
-
     @Override
-    public Set<User> getUsers() {
-        Set<User> users= new HashSet<>();
-        userRepository.findAll().iterator().forEachRemaining(users::add);
-        return users;
+    public List<UserDto> getUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::userToUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteById(String deletionId) {
+    public UserDto saveUserByDto(Long id, UserDto userDto) {
+
+        User user = userMapper.userDtoToUser(userDto);
+        user.setId(id);
+
+        return saveAndReturn(user);
+    }
+
+    @Override
+    public void deleteById(Long deletionId) {
         userRepository.deleteById(deletionId);
     }
 }

@@ -16,6 +16,8 @@ import java.util.Optional;
 public class UserController {
 
 
+    //TODO Update the whole class
+
     private final UserService userService;
     private final UserRepository userRepository;
 
@@ -25,34 +27,35 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+
     @GetMapping("/finduser/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public User getUserById(@PathVariable("userid")String userId){
-        return userService.findById(userId);
+        return null;//userService.findById(userId);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user){
         userRepository.save(user);
-        userService.createNewUser(user);
+      //  userService.createNewUser(user);
         return user;
     }
 
     @PutMapping("/update/{userid}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> updateUser(@PathVariable("userid")String userId, @RequestBody User user){
+    public Optional<User> updateUser(@PathVariable("userid")Long userId, @RequestBody User user){
         Optional<User> user1 = userRepository.findById(userId);
         if (!user1.isPresent()){
             throw new NotFoundException("This User does´nt exist");
         }
-        return userService.updateUserById(userId,user);
+        return null;//userService.updateUserById(userId,user);
     }
 
     @DeleteMapping("delete/{userid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUserById(@PathVariable("userid")String userId){
+    public void deleteUserById(@PathVariable("userid")Long userId){
         Optional<User> user1 = userRepository.findById(userId);
         if (!user1.isPresent()){
             throw new NotFoundException("This User does´nt exist");

@@ -1,22 +1,23 @@
 package com.john21121.GlobantUniversityTesis.services;
 
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
+import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public interface UserService {
 
-    User findById(String id);
+    UserDto findById(Long id);
 
-    User createNewUser(User user);
+    UserDto createNewUser(UserDto userDto);
 
-    Optional<User> updateUserById(String userId, User user);
+    UserDto updateUserById(Long userId, UserDto userDto);
 
-    Set<User> getUsers () ;
+    List<UserDto> getUsers ();
 
-    void deleteById(String deletionId);
+    UserDto saveUserByDto(Long id, UserDto userDto);
+
+    void deleteById(Long deletionId);
 
 }

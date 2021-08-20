@@ -1,13 +1,13 @@
 package com.john21121.GlobantUniversityTesis.services;
 
 import com.john21121.GlobantUniversityTesis.dto.MessageDto;
+import com.john21121.GlobantUniversityTesis.exceptions.ResourceNotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import com.john21121.GlobantUniversityTesis.mappers.MessageMapper;
 import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,14 +29,14 @@ public class MessageServiceImpl implements MessageService {
 
 
     @Override
-    public Optional<MessageDto> findById(Long id) {
-        return messageRepository.findById(id).map(messageMapper::messageToMessageDto);
+    public MessageDto findById(Long id) {
+        return messageRepository.findById(id).map(messageMapper::messageToMessageDto)
+                .map(messageDto -> {messageDto.setId(id);
+                return messageDto;}).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
     public MessageDto createNewMessage(MessageDto messageDto) {
-
-
         return saveAndReturn(messageMapper.messageDtoToMessage(messageDto));
     }
 
@@ -51,8 +51,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDto> getAllMessages() {
         return messageRepository.findAll().stream()
-                .map(message -> {MessageDto messageDto= messageMapper.messageToMessageDto(message);
-                return messageDto;})
+                .map(messageMapper::messageToMessageDto)
                 .collect(Collectors.toList());
     }
 

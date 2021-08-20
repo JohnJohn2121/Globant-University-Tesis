@@ -1,18 +1,16 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
 import com.john21121.GlobantUniversityTesis.dto.MessageDto;
-import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
 import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
 import com.john21121.GlobantUniversityTesis.mailingsystem.RecipientType;
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
 import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
 import com.john21121.GlobantUniversityTesis.services.MessageService;
+import com.john21121.GlobantUniversityTesis.services.MessageServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.RecipientService;
-import com.john21121.GlobantUniversityTesis.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +22,11 @@ import java.util.Optional;
 public class MessageController {
 
     private final MessageRepository messageRepository;
-    private final MessageService messageService;
+    private final MessageServiceImpl messageService;
     private final RecipientRepository recipientRepository;
     private final RecipientService recipientService;
 
-    public MessageController(MessageRepository messageRepository, MessageService messageService,
+    public MessageController(MessageRepository messageRepository, MessageServiceImpl messageService,
                              RecipientService recipientService, RecipientRepository recipientRepository) {
         this.messageRepository = messageRepository;
         this.messageService = messageService;
@@ -37,12 +35,12 @@ public class MessageController {
     }
 
     //TODO fix recipient name, validate userID here
-    @PostMapping("/messages/{recipientid}")
+    /*@PostMapping("/messages/{recipientid}")
     @ResponseStatus(HttpStatus.CREATED)
     public void sendMessageToRecipient(@RequestBody MessageDto message, @PathVariable("recipientId") Long recipientId){
         message = messageService.findById(message.getId());
         UserDto user = message.getUser();
-        RecipientDto recipient = recipientService.findById(recipientId);
+        Recipient recipient = recipientService.findById(recipientId);
         if (recipient != null) {
             recipient.setRecipientType(RecipientType.TO);
             //TODO Fix this relation
@@ -50,7 +48,7 @@ public class MessageController {
             recipient.setUser(user);
         }
         throw new NotFoundException("The user or Recipient, does not exist");
-    }
+    }*/
 
     @GetMapping("/sentMessages/{messageid}")
     @ResponseStatus(HttpStatus.OK)

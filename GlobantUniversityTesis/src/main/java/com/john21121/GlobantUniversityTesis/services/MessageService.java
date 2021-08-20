@@ -9,8 +9,8 @@ import java.util.Optional;
 @Component
 public interface MessageService {
 
-    // Revision is for controller
-    Optional<MessageDto> findById(Long id);
+
+    MessageDto findById(Long id);
 
     MessageDto createNewMessage(MessageDto messageDto);
 
