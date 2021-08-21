@@ -5,7 +5,7 @@ import com.john21121.GlobantUniversityTesis.mailingsystem.Label;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface LabelMapper {
 
     LabelMapper INSTANCE = Mappers.getMapper(LabelMapper.class);

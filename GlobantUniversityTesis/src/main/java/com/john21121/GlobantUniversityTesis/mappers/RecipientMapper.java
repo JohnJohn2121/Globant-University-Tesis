@@ -6,7 +6,7 @@ import com.john21121.GlobantUniversityTesis.mailingsystem.Recipient;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RecipientMapper {
 
 

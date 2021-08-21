@@ -6,11 +6,13 @@ import com.john21121.GlobantUniversityTesis.mailingsystem.Label;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import com.john21121.GlobantUniversityTesis.mappers.LabelMapper;
 import com.john21121.GlobantUniversityTesis.repository.LabelRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.lang.module.ResolutionException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class LabelServiceImpl implements LabelService {
 

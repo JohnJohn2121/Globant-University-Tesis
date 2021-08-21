@@ -5,6 +5,7 @@ import com.john21121.GlobantUniversityTesis.exceptions.ResourceNotFoundException
 import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 import com.john21121.GlobantUniversityTesis.mappers.UserMapper;
 import com.john21121.GlobantUniversityTesis.repository.UserRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

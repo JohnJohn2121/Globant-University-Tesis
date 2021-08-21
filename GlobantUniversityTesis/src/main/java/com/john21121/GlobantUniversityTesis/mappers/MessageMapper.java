@@ -4,9 +4,10 @@ import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import com.john21121.GlobantUniversityTesis.mailingsystem.Message;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MessageMapper {
 
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
