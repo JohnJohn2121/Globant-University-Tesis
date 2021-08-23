@@ -46,6 +46,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    //TODO Verify
     @RequestMapping(value="/login/",method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) throws Exception {
 
@@ -72,6 +73,7 @@ public class UserController {
         return userService.findById(userId);
     }
 
+    //TODO Verify
     @PostMapping("/singup/")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody UserDto user){
