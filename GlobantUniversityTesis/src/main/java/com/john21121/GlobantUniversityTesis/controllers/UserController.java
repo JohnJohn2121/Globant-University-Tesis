@@ -72,7 +72,7 @@ public class UserController {
         return userService.findById(userId);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/singup/")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody UserDto user){
         return userService.createNewUser(user);

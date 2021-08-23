@@ -7,7 +7,6 @@ import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
 import com.john21121.GlobantUniversityTesis.mailingsystem.RecipientType;
 import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
 import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
-import com.john21121.GlobantUniversityTesis.services.MessageService;
 import com.john21121.GlobantUniversityTesis.services.MessageServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.RecipientService;
 import org.springframework.http.HttpStatus;
@@ -43,6 +42,7 @@ public class MessageController {
             recipient.setRecipientType(RecipientType.TO);
             recipient.setMessage(message);
             recipient.setUser(user);
+            message.setRecipient(recipient.getMessage().getRecipient());
         }
         throw new NotFoundException("The user or Recipient, does not exist");
     }
