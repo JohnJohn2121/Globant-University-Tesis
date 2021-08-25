@@ -22,39 +22,42 @@ import java.util.List;
 @RequestMapping("/user/login/{userId}/messages")
 public class MessageController {
 
-    private final MessageRepository messageRepository;
+
     private final MessageServiceImpl messageService;
     private final RecipientRepository recipientRepository;
     private final RecipientService recipientService;
     private final UserService userService;
+    private final UserRepository userRepository ;
 
-
-    public MessageController(MessageRepository messageRepository, MessageServiceImpl messageService,
+    public MessageController( MessageServiceImpl messageService,
                              RecipientService recipientService, RecipientRepository recipientRepository,
-                             UserService userService ){
-        this.messageRepository = messageRepository;
+                             UserService userService, UserRepository userRepository ){
         this.messageService = messageService;
         this.recipientRepository = recipientRepository;
         this.recipientService = recipientService;
         this.userService = userService;
+        this.userRepository = userRepository;
 
     }
+
     private UserDto findUserById( Long userId){
         return userService.findById(userId);
     }
 
-
     //TODO fix recipient name, validate userID here
     @PostMapping("/message/")
     @ResponseStatus(HttpStatus.CREATED)
-    public void sendMessageToRecipient(@RequestBody MessageDto message,@PathVariable("{userId}")Long userId ){
-//        if (userRepository.findByUsername(message.getUser().getUsername()) == null){
-//            throw new NotFoundException("This user does not exist");
-//        }else
-
+    public void sendMessageToRecipient(@RequestBody MessageDto message,@PathVariable("userId")Long userId ){
         UserDto userDto = findUserById(userId);
+        RecipientDto recipientDto = new RecipientDto();
+        if (userRepository.findByUsername(message.getUser().getUsername()) == null){
+            throw new NotFoundException("This user does not exist");
+        }else
         message.setUser(userDto);
         messageService.createNewMessage(message);
+        recipientDto.setMessage(message);
+        recipientDto.setUser(userDto);
+        recipientService.createNewRecipient(recipientDto);
     }
 
     @GetMapping("/sentMessages/{messageid}")

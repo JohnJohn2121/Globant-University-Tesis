@@ -17,7 +17,7 @@ public class Message {
     private String subject;
     private String body;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
 
