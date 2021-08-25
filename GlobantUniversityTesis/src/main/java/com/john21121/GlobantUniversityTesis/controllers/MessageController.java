@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/login/{userId}/messages")
+@RequestMapping("/user/login/messages")
 public class MessageController {
 
 
@@ -28,16 +28,15 @@ public class MessageController {
     private final RecipientRepository recipientRepository;
     private final RecipientService recipientService;
     private final UserService userService;
-    private final UserRepository userRepository ;
+
 
     public MessageController( MessageServiceImpl messageService,
                              RecipientService recipientService, RecipientRepository recipientRepository,
-                             UserService userService, UserRepository userRepository ){
+                             UserService userService){
         this.messageService = messageService;
         this.recipientRepository = recipientRepository;
         this.recipientService = recipientService;
         this.userService = userService;
-        this.userRepository = userRepository;
 
     }
 
@@ -45,22 +44,23 @@ public class MessageController {
         return userService.findById(userId);
     }
 
-    //TODO fix recipient name, validate userID here
+
     @PostMapping("/message/")
     @ResponseStatus(HttpStatus.CREATED)
-    public void sendMessageToRecipient(@RequestBody MessageDto message,@PathVariable("userId")Long userId ){
-        UserDto userDto = findUserById(userId);
-        RecipientDto recipientDto = new RecipientDto();
+    public RecipientDto sendMessageToRecipient(@RequestBody RecipientDto recipientDto){
         List<UserDto> userDtoList = new ArrayList<>();
-        if (userRepository.findByUsername(message.getUser().getUsername()) == null){
-            throw new NotFoundException("This user does not exist");
-        }else
-        message.setUser(userDto);
-        messageService.createNewMessage(message);
-        recipientDto.setMessage(message);
-        userDtoList.add(userDto);
-        recipientDto.setUser(userDtoList);
-        recipientService.createNewRecipient(recipientDto);
+        int i = 0;
+        for (UserDto userDto : recipientDto.getUser()){
+            userDto = userService.findUserByUsername(recipientDto.getUser().get(i).getUsername());
+            userDtoList.add(userDto);
+            i++;
+        }
+          MessageDto messageDto = recipientDto.getMessage();
+          messageDto.setUser(userService.findUserByUsername(messageDto.getUser().getUsername()));
+          recipientDto.setUser(userDtoList);
+          messageService.createNewMessage(messageDto);
+          recipientService.createNewRecipient(recipientDto);
+    return recipientDto;
     }
 
     @GetMapping("/sentMessages/{messageid}")
