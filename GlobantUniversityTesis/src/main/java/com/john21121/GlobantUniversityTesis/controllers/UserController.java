@@ -93,9 +93,14 @@ public class UserController {
     @DeleteMapping("delete/{userid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserById(@PathVariable("userid")Long userId){
-        userRepository.deleteById(userId);
+        userService.deleteById(userId);
     }
 
+    @DeleteMapping("delete/{username}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteUserByUsername(@PathVariable("username")String username){
+        userService.deleteUserByUsername(username);
+    }
 
 
 }

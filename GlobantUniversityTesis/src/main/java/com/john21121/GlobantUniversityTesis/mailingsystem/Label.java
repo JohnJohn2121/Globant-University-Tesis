@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,6 +21,6 @@ public class Label {
     @JoinTable(name = "label_recipient",
             joinColumns = @JoinColumn(name = "label_id"),
             inverseJoinColumns = @JoinColumn(name = "recipient_id"))
-    private Set<Recipient> recipients;
+    private List<Recipient> recipients;
 
 }

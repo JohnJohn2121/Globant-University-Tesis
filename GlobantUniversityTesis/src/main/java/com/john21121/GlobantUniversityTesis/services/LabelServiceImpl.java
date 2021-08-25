@@ -38,6 +38,12 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public LabelDto findLabelByLabelName(String labelName) {
+        Label label = labelRepository.findLabelByLabelName(labelName);
+        return labelMapper.labelToLabelDTO(label);
+    }
+
+    @Override
     public LabelDto createNewLabel(LabelDto labelDto) {
         return saveAndReturn(labelMapper.labelDtoToLabel(labelDto));
     }
@@ -59,5 +65,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public void deleteById(Long deletionId) {
         labelRepository.deleteById(deletionId);
+    }
+
+    @Override
+    public void deleteLabelByLabelName(String labelName) {
+        Label label = labelRepository.findLabelByLabelName(labelName);
+        labelRepository.deleteById(label.getId());
     }
 }

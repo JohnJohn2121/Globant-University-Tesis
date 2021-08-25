@@ -23,8 +23,8 @@ public class Recipient {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Message message;
 
-    @ManyToMany(mappedBy = "recipients")
-    private Set<Label> labels;
+    @ManyToMany(mappedBy = "recipients",cascade = CascadeType.MERGE)
+    private List<Label> labels;
 
     @Enumerated(value = EnumType.STRING)
     private RecipientType recipientType;

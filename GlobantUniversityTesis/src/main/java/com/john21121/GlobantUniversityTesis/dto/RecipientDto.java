@@ -13,7 +13,7 @@ public class RecipientDto {
     private List<UserDto> user;
     private MessageDto message;
     private RecipientType recipientType;
-    private Set<LabelDto> labelDtoSet;
+    private List<LabelDto> labelDtoSet;
 
 
 }

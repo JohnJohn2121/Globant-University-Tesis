@@ -12,6 +12,7 @@ import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
 import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import com.john21121.GlobantUniversityTesis.services.MessageServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.RecipientService;
+import com.john21121.GlobantUniversityTesis.services.RecipientServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,25 +26,18 @@ public class MessageController {
 
 
     private final MessageServiceImpl messageService;
-    private final RecipientRepository recipientRepository;
-    private final RecipientService recipientService;
+    private final RecipientServiceImpl recipientService;
     private final UserService userService;
 
 
     public MessageController( MessageServiceImpl messageService,
-                             RecipientService recipientService, RecipientRepository recipientRepository,
+                             RecipientServiceImpl recipientService,
                              UserService userService){
         this.messageService = messageService;
-        this.recipientRepository = recipientRepository;
         this.recipientService = recipientService;
         this.userService = userService;
 
     }
-
-    private UserDto findUserById( Long userId){
-        return userService.findById(userId);
-    }
-
 
     @PostMapping("/message/")
     @ResponseStatus(HttpStatus.CREATED)
@@ -77,18 +71,24 @@ public class MessageController {
         return recipientService.findById(messageId);
     }
 
-    @GetMapping("/inbox")
+    @GetMapping("/sent")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<MessageDto> getAllMessages(){
         return  messageService.getAllMessages();
     }
 
+    @GetMapping("/inbox")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public List<RecipientDto> getInboxFromUser(){
+        return recipientService.getAllMessagesInRecipient();
+    }
+
     @DeleteMapping("/receivedMessages/{recipientid}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteMessageFromRecipient(@PathVariable("recipientid")Long messageId){
         recipientService.deleteById(messageId);
-        recipientRepository.deleteById(messageId);
     }
 
 }
