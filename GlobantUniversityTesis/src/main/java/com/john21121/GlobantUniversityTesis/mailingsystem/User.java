@@ -1,6 +1,7 @@
 package com.john21121.GlobantUniversityTesis.mailingsystem;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@Component
 public class User {
 
     @Id
@@ -25,17 +27,8 @@ public class User {
     private String state;
     private String country;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Message> message;
-
     public User() {
     }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_recipient",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipient_id"))
-    private Set<Recipient> recipients = new HashSet<>();
 
     public User(String username, String password, String firstName, String lastName, Long identificationNum,
                 String address, String zipCode, String city, String state, String country) {
@@ -51,7 +44,4 @@ public class User {
         this.country = country;
     }
 
-    public User(Set<Message> message) {
-        this.message = message;
-    }
 }

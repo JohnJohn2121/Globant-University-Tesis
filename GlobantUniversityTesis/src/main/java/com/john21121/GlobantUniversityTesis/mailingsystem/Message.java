@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 
 @Data
@@ -18,20 +17,8 @@ public class Message {
     private String subject;
     private String body;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @OneToMany
-    @JoinTable(name = "message_recipient",
-            joinColumns = @JoinColumn(name = "message_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipient_id"))
-    private Set<Recipient> recipient;
 
-
-    public Message(String subject, String body, User user,Set< Recipient> recipient) {
-        this.subject = subject;
-        this.body = body;
-        this.user = user;
-        this.recipient = recipient;
-    }
 }

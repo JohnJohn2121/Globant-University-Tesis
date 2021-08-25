@@ -94,8 +94,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserById(@PathVariable("userid")Long userId){
         userRepository.deleteById(userId);
-        userService.deleteById(userId);
-
     }
 
 

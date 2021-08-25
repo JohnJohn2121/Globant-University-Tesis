@@ -59,10 +59,8 @@ public class UserServiceImpl implements UserService {
             if (userDto.getCountry() != null){
                 user.setCountry(userDto.getCountry());
             }
-            UserDto modifiedUser = userMapper.userToUserDto(userRepository.save(user));
 
-            modifiedUser.setId(userId);
-            return modifiedUser;
+            return userMapper.userToUserDto(userRepository.save(user));
         }).orElseThrow(ResourceNotFoundException::new);
     }
 

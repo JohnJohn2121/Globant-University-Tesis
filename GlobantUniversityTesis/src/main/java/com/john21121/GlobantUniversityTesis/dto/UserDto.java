@@ -1,11 +1,13 @@
 package com.john21121.GlobantUniversityTesis.dto;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Component
 public class UserDto {
 
     private Long id;
@@ -19,7 +21,6 @@ public class UserDto {
     private String city;
     private String state;
     private String country;
-    private Set<MessageDto> message;
-    private Set<RecipientDto> recipients = new HashSet<>();
+
 
 }
