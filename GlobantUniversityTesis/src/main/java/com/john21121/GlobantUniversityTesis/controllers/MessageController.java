@@ -16,6 +16,7 @@ import com.john21121.GlobantUniversityTesis.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,13 +51,15 @@ public class MessageController {
     public void sendMessageToRecipient(@RequestBody MessageDto message,@PathVariable("userId")Long userId ){
         UserDto userDto = findUserById(userId);
         RecipientDto recipientDto = new RecipientDto();
+        List<UserDto> userDtoList = new ArrayList<>();
         if (userRepository.findByUsername(message.getUser().getUsername()) == null){
             throw new NotFoundException("This user does not exist");
         }else
         message.setUser(userDto);
         messageService.createNewMessage(message);
         recipientDto.setMessage(message);
-        recipientDto.setUser(userDto);
+        userDtoList.add(userDto);
+        recipientDto.setUser(userDtoList);
         recipientService.createNewRecipient(recipientDto);
     }
 

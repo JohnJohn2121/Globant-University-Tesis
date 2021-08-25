@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ValueGenerationType;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,8 +17,8 @@ public class Recipient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private User user;
+    @OneToMany(cascade = CascadeType.MERGE)
+    private List<User> user;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Message message;
