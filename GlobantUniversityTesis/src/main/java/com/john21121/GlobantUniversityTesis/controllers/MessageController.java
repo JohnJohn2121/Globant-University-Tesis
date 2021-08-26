@@ -1,5 +1,6 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
@@ -34,6 +35,7 @@ public class MessageController {
 
     @PostMapping("/message/")
     @ResponseStatus(HttpStatus.CREATED)
+    @JsonIgnoreProperties("user")
     public RecipientDto sendMessageToRecipient(@RequestBody RecipientDto recipientDto){
         List<UserDto> userDtoList = new ArrayList<>();
         int i = 0;
@@ -46,6 +48,7 @@ public class MessageController {
           messageDto.setUser(userService.findUserByUsername(messageDto.getUser().getUsername()));
           recipientDto.setUser(userDtoList);
           recipientService.createNewRecipient(recipientDto);
+
     return recipientDto;
     }
 
