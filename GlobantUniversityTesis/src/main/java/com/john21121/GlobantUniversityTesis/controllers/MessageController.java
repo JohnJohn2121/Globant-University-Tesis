@@ -1,17 +1,10 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
 import com.john21121.GlobantUniversityTesis.dto.UserDto;
-import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
-import com.john21121.GlobantUniversityTesis.mailingsystem.RecipientType;
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
-import com.john21121.GlobantUniversityTesis.mappers.UserMapper;
-import com.john21121.GlobantUniversityTesis.repository.MessageRepository;
-import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
-import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import com.john21121.GlobantUniversityTesis.services.MessageServiceImpl;
-import com.john21121.GlobantUniversityTesis.services.RecipientService;
 import com.john21121.GlobantUniversityTesis.services.RecipientServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/login/messages")
+@RequestMapping("/user/login/{username}/messages")
 public class MessageController {
 
 
@@ -52,7 +45,6 @@ public class MessageController {
           MessageDto messageDto = recipientDto.getMessage();
           messageDto.setUser(userService.findUserByUsername(messageDto.getUser().getUsername()));
           recipientDto.setUser(userDtoList);
-          messageService.createNewMessage(messageDto);
           recipientService.createNewRecipient(recipientDto);
     return recipientDto;
     }
@@ -71,12 +63,30 @@ public class MessageController {
         return recipientService.findById(messageId);
     }
 
-    @GetMapping("/sent")
+    @GetMapping()
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<MessageDto> getAllMessages(){
         return  messageService.getAllMessages();
     }
+
+    @GetMapping("/sent")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @JsonIgnoreProperties("user")
+    public List<MessageDto> getAllMessagesFromUser(@PathVariable("username")String username){
+        List<MessageDto> messageDtos = messageService.getAllMessages();
+        List<MessageDto> updatedMessageDto= new ArrayList<>();
+        int i = 0;
+        for (MessageDto messageDto : messageDtos){
+            if (messageDto.getUser().getUsername().equals(username)) {
+                updatedMessageDto.add(messageDto);
+            }
+            i++;
+        }
+        return  updatedMessageDto;
+    }
+
 
     @GetMapping("/inbox")
     @ResponseBody

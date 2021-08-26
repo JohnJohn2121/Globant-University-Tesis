@@ -3,13 +3,11 @@ package com.john21121.GlobantUniversityTesis.controllers;
 
 import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import com.john21121.GlobantUniversityTesis.exceptions.NotFoundException;
-import com.john21121.GlobantUniversityTesis.repository.UserRepository;
 import com.john21121.GlobantUniversityTesis.security.AuthRequest;
 import com.john21121.GlobantUniversityTesis.security.AuthResponse;
 import com.john21121.GlobantUniversityTesis.security.JwtUtil;
 import com.john21121.GlobantUniversityTesis.security.MyUserDetailsService;
 import com.john21121.GlobantUniversityTesis.services.UserService;
-import com.john21121.GlobantUniversityTesis.mailingsystem.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,16 +36,15 @@ public class UserController {
     private MyUserDetailsService userDetailsService;
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
 
     @RequestMapping(value="/login/",method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) throws Exception {
 
         try {
@@ -71,6 +68,13 @@ public class UserController {
     @ResponseBody
     public UserDto getUserById(@PathVariable("userid")Long userId){
         return userService.findById(userId);
+    }
+
+    @GetMapping("/login/finduser/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDto getUserByUsername(@PathVariable("username")String username){
+        return userService.findUserByUsername(username);
     }
 
 

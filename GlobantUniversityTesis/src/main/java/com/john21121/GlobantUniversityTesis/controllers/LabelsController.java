@@ -1,23 +1,18 @@
 package com.john21121.GlobantUniversityTesis.controllers;
 
 import com.john21121.GlobantUniversityTesis.dto.LabelDto;
-import com.john21121.GlobantUniversityTesis.dto.MessageDto;
 import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
-import com.john21121.GlobantUniversityTesis.mailingsystem.Label;
-import com.john21121.GlobantUniversityTesis.repository.LabelRepository;
-import com.john21121.GlobantUniversityTesis.repository.RecipientRepository;
 import com.john21121.GlobantUniversityTesis.services.LabelServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.RecipientServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
-@RequestMapping("/user/login/labels")
+@RequestMapping("/user/{userId}/login/labels")
 public class LabelsController {
 
     private final LabelServiceImpl labelService;
