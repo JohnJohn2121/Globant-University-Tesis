@@ -94,6 +94,17 @@ public class UserController {
         return userService.updateUserById(userId,user);
     }
 
+    @PutMapping("login/{username}/update/")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto updateUserByName(@PathVariable("username")String userId, @RequestBody UserDto user){
+        UserDto user1 = userService.findUserByUsername(userId);
+        if (user1 == null){
+            throw new NotFoundException("This User does´nt exist");
+        }
+        return userService.updateUserById(user1.getId(),user);
+    }
+
+
     @DeleteMapping("delete/{userid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserById(@PathVariable("userid")Long userId){

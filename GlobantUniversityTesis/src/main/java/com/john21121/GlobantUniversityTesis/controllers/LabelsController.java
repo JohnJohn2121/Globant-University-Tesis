@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user/{userId}/login/labels")
+@RequestMapping("/user/login/{username}/labels")
 public class LabelsController {
 
     private final LabelServiceImpl labelService;
