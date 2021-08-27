@@ -2,6 +2,7 @@ package com.john21121.GlobantUniversityTesis.controllers;
 
 import com.john21121.GlobantUniversityTesis.dto.LabelDto;
 import com.john21121.GlobantUniversityTesis.dto.RecipientDto;
+import com.john21121.GlobantUniversityTesis.dto.UserDto;
 import com.john21121.GlobantUniversityTesis.services.LabelServiceImpl;
 import com.john21121.GlobantUniversityTesis.services.RecipientServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -42,11 +43,27 @@ public class LabelsController {
         recipientDtos.add(recipientDto);
         labelDto.setRecipients(recipientDtos);
         recipientDto.setLabelDtoSet(labelDtos);
-
         recipientService.saveRecipientByDto(recipientDto.getId(),recipientDto);
         labelService.saveLabelByLabelDto(labelDto.getId(), labelDto);
     }
 
+
+    @GetMapping("/label/name/{labelName}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<RecipientDto> getMessagesInLabel(@PathVariable("labelname")String labelName){
+        List<RecipientDto> recipientDtoList = recipientService.getAllMessagesInRecipient();
+        List<RecipientDto> labeledList = new ArrayList<>();
+        int i= 0;
+        for (RecipientDto recipientDto : recipientDtoList){
+            if (recipientDto.getLabelDtoSet().get(i).getLabelName().equals(labelName)){
+                labeledList.add(recipientDto);
+            }
+            i++;
+        }
+
+        return labeledList;
+    }
 
     @GetMapping("/allLabels")
     @ResponseBody
@@ -62,7 +79,7 @@ public class LabelsController {
         return labelService.findLabelById(labelId);
     }
 
-    @GetMapping("/label/{labelName}")
+    @GetMapping("/label/find/{labelName}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LabelDto getLabelByName(@PathVariable("labelName")String labelName){
@@ -78,7 +95,7 @@ public class LabelsController {
 
     @DeleteMapping("/delete/{labelName}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUserByUsername(@PathVariable("labelName")String labelName){
+    public void deleteUserByLabelName(@PathVariable("labelName")String labelName){
         labelService.deleteLabelByLabelName(labelName);
     }
 }
